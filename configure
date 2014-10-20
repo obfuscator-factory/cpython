@@ -775,6 +775,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 enable_marshal
+enable_codeobject
 enable_universalsdk
 with_universal_archs
 with_framework_name
@@ -1432,6 +1433,7 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-marshal       hide marshal functions
+  --disable-codeobject    hide codeobject functions
   --enable-universalsdk[=SDKDIR]
                           Build against Mac OS X 10.4u SDK (ppc/i386)
   --enable-framework[=INSTALLDIR]
@@ -2880,6 +2882,18 @@ fi
 if test "x$enable_nomarshal" = "xno"; then :
 
 $as_echo "#define OBFUSCATED_NOMARSHAL 1" >>confdefs.h
+
+fi
+
+# hide codeobject attributes #
+# Check whether --enable-codeobject was given.
+if test "${enable_codeobject+set}" = set; then :
+  enableval=$enable_codeobject;
+fi
+
+if test "x$enable_codeobject" = "xno"; then :
+
+$as_echo "#define OBFUSCATED_NOCODEOBJECT 1" >>confdefs.h
 
 fi
 

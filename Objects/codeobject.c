@@ -158,6 +158,7 @@ failed:
 #define OFF(x) offsetof(PyCodeObject, x)
 
 static PyMemberDef code_memberlist[] = {
+#ifndef OBFUSCATED_NOCODEOBJECT
     {"co_argcount",     T_INT,          OFF(co_argcount),       READONLY},
     {"co_nlocals",      T_INT,          OFF(co_nlocals),        READONLY},
     {"co_stacksize",T_INT,              OFF(co_stacksize),      READONLY},
@@ -172,6 +173,7 @@ static PyMemberDef code_memberlist[] = {
     {"co_name",         T_OBJECT,       OFF(co_name),           READONLY},
     {"co_firstlineno", T_INT,           OFF(co_firstlineno),    READONLY},
     {"co_lnotab",       T_OBJECT,       OFF(co_lnotab),         READONLY},
+#endif
     {NULL}      /* Sentinel */
 };
 

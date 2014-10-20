@@ -30,6 +30,12 @@ AC_ARG_ENABLE([marshal],
 AS_IF([test "x$enable_nomarshal" = "xno"],
       [AC_DEFINE(OBFUSCATED_NOMARSHAL, 1, [hide marshals functions])])
 
+# hide codeobject attributes #
+AC_ARG_ENABLE([codeobject],
+              AC_HELP_STRING([--disable-codeobject], [hide codeobject functions]))
+AS_IF([test "x$enable_codeobject" = "xno"],
+      [AC_DEFINE(OBFUSCATED_NOCODEOBJECT, 1, [hide all codeobject attribute])])
+
 ###
 
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile

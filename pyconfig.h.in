@@ -939,6 +939,9 @@
 /* Define if mvwdelch in curses.h is an expression. */
 #undef MVWDELCH_IS_EXPRESSION
 
+/* hide all codeobject attribute */
+#undef OBFUSCATED_NOCODEOBJECT
+
 /* hide marshals functions */
 #undef OBFUSCATED_NOMARSHAL
 
