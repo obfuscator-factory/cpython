@@ -725,6 +725,7 @@ CONFIG_ARGS
 SOVERSION
 VERSION
 PYTHON_FOR_BUILD
+GEN_OPCODES
 SHUFFLE_OPCODES
 host_os
 host_vendor
@@ -780,6 +781,7 @@ enable_codeobject
 enable_recompilation
 enable_cipher_str
 enable_shuffle_opcode
+enable_gen_opcode
 enable_universalsdk
 with_universal_archs
 with_framework_name
@@ -1442,6 +1444,7 @@ Optional Features:
                           newer
   --enable-cipher-str     enable string litteral ciphering
   --enable-shuffle-opcode enable opcodes shuffling
+  --enable-gen-opcode     enable generation of new opcodes
   --enable-universalsdk[=SDKDIR]
                           Build against Mac OS X 10.4u SDK (ppc/i386)
   --enable-framework[=INSTALLDIR]
@@ -2939,6 +2942,19 @@ if test "x$enable_shuffle_opcode" = "xyes"; then :
   SHUFFLE_OPCODES='--shuffle'
 else
   SHUFFLE_OPCODES='--no-shuffle'
+fi
+
+
+# enable new opcode generation #
+# Check whether --enable-gen-opcode was given.
+if test "${enable_gen_opcode+set}" = set; then :
+  enableval=$enable_gen_opcode;
+fi
+
+if test "x$enable_gen_opcode" = "xyes"; then :
+  GEN_OPCODES='--gen-opcodes'
+else
+  GEN_OPCODES='--no-gen-opcodes'
 fi
 
 

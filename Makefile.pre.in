@@ -415,6 +415,10 @@ Lib/opcode.py Include/opcode.h: $(srcdir)/obfuscate/genopcodes.py $(srcdir)/Lib/
 	test -d Include || mkdir Include
 	$(PYTHON) $(srcdir)/obfuscate/genopcodes.py @SHUFFLE_OPCODES@ $(srcdir)/Lib/opcode.py.in $(srcdir)/Include/opcode.h.in Lib/opcode.py Include/opcode.h
 
+Python/ceval.c: $(srcdir)/obfuscate/auto_rewrite.py Lib/opcode.py
+	$(PYTHON) $(srcdir)/obfuscate/auto_rewrite.py @GEN_OPCODES@ $(srcdir)/Python/ceval.c.in Python/ceval.c obfuscate/most_used_opcodes
+
+###
 
 # Compile a binary with gcc profile guided optimization.
 profile-opt:
@@ -1302,6 +1306,7 @@ clean: pycremoval
 	find build -name 'fficonfig.py' -exec rm -f {} ';' || true
 	-rm -f Lib/lib2to3/*Grammar*.pickle
 	-rm -f Lib/opcode.py Include/opcode.h
+	-rm -f Python/ceval.c
 
 profile-removal:
 	find . -name '*.gc??' -exec rm -f {} ';'

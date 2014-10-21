@@ -55,6 +55,14 @@ AS_IF([test "x$enable_shuffle_opcode" = "xyes"],
       [SHUFFLE_OPCODES='--no-shuffle'])
 AC_SUBST(SHUFFLE_OPCODES)
 
+# enable new opcode generation #
+AC_ARG_ENABLE([gen-opcode],
+              AC_HELP_STRING([--enable-gen-opcode],[enable generation of new opcodes]))
+AS_IF([test "x$enable_gen_opcode" = "xyes"],
+      [GEN_OPCODES='--gen-opcodes'],
+      [GEN_OPCODES='--no-gen-opcodes'])
+AC_SUBST(GEN_OPCODES)
+
 ###
 
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile

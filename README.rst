@@ -2,9 +2,9 @@
 Obfuscated Python Interpreter
 =============================
 
-> This is a proof of cocnept, use at your own risk
+> This is a proof of concept, use at your own risk
 > This is a proof of concept, no good engineering here
-> This is a proof concept, always repeat warnig twice
+> This is a proof concept, always repeat warning twice
 
 What is it?
 -----------
