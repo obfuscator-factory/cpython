@@ -725,6 +725,7 @@ CONFIG_ARGS
 SOVERSION
 VERSION
 PYTHON_FOR_BUILD
+SHUFFLE_OPCODES
 host_os
 host_vendor
 host_cpu
@@ -778,6 +779,7 @@ enable_marshal
 enable_codeobject
 enable_recompilation
 enable_cipher_str
+enable_shuffle_opcode
 enable_universalsdk
 with_universal_archs
 with_framework_name
@@ -1439,6 +1441,7 @@ Optional Features:
   --disable-recompilation disable recompilation of .pyc file when .py file is
                           newer
   --enable-cipher-str     enable string litteral ciphering
+  --enable-shuffle-opcode enable opcodes shuffling
   --enable-universalsdk[=SDKDIR]
                           Build against Mac OS X 10.4u SDK (ppc/i386)
   --enable-framework[=INSTALLDIR]
@@ -2925,6 +2928,19 @@ if test "x$enable_cipher_str" = "xyes"; then :
 $as_echo "#define OBFUSCATED_CIPHER_STR 1" >>confdefs.h
 
 fi
+
+# enable opcode shuffling #
+# Check whether --enable-shuffle-opcode was given.
+if test "${enable_shuffle_opcode+set}" = set; then :
+  enableval=$enable_shuffle_opcode;
+fi
+
+if test "x$enable_shuffle_opcode" = "xyes"; then :
+  SHUFFLE_OPCODES='--shuffle'
+else
+  SHUFFLE_OPCODES='--no-shuffle'
+fi
+
 
 ###
 

@@ -407,6 +407,15 @@ LIBRARY_OBJS=	\
 all:		build_all
 build_all:	$(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
 
+###
+# Obfuscation targets
+###
+Lib/opcode.py Include/opcode.h: $(srcdir)/obfuscate/genopcodes.py $(srcdir)/Lib/opcode.py.in $(srcdir)/Include/opcode.h.in
+	test -d Lib || mkdir Lib
+	test -d Include || mkdir Include
+	$(PYTHON) $(srcdir)/obfuscate/genopcodes.py @SHUFFLE_OPCODES@ $(srcdir)/Lib/opcode.py.in $(srcdir)/Include/opcode.h.in Lib/opcode.py Include/opcode.h
+
+
 # Compile a binary with gcc profile guided optimization.
 profile-opt:
 	@echo "Building with support for profile generation:"
@@ -778,7 +787,7 @@ $(LIBRARY_OBJS) $(MODOBJS) Modules/python.o: $(PYTHON_HEADERS)
 
 TESTOPTS=	-l $(EXTRATESTOPTS)
 TESTPROG=	$(srcdir)/Lib/test/regrtest.py
-TESTPYTHON=	$(RUNSHARED) ./$(BUILDPYTHON) -Wd -3 -E -tt $(TESTPYTHONOPTS)
+TESTPYTHON=	PYTHONPATH=./Lib $(RUNSHARED) ./$(BUILDPYTHON) -Wd -3 -tt $(TESTPYTHONOPTS)
 test:		all platform
 		-find $(srcdir)/Lib -name '*.py[co]' -print | xargs rm -f
 		-$(TESTPYTHON) $(TESTPROG) $(TESTOPTS)
@@ -1292,6 +1301,7 @@ clean: pycremoval
 	find build -name 'fficonfig.h' -exec rm -f {} ';' || true
 	find build -name 'fficonfig.py' -exec rm -f {} ';' || true
 	-rm -f Lib/lib2to3/*Grammar*.pickle
+	-rm -f Lib/opcode.py Include/opcode.h
 
 profile-removal:
 	find . -name '*.gc??' -exec rm -f {} ';'

@@ -48,6 +48,13 @@ AC_ARG_ENABLE([cipher-str],
 AS_IF([test "x$enable_cipher_str" = "xyes"],
       [AC_DEFINE(OBFUSCATED_CIPHER_STR, 1, [define to active string ciphering])])
 
+# enable opcode shuffling #
+AC_ARG_ENABLE([shuffle-opcode], AC_HELP_STRING([--enable-shuffle-opcode], [enable opcodes shuffling]))
+AS_IF([test "x$enable_shuffle_opcode" = "xyes"],
+      [SHUFFLE_OPCODES='--shuffle'],
+      [SHUFFLE_OPCODES='--no-shuffle'])
+AC_SUBST(SHUFFLE_OPCODES)
+
 ###
 
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile

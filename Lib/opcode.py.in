@@ -1,0 +1,188 @@
+__all__ = ["cmp_op", "hasconst", "hasname", "hasjrel", "hasjabs",
+           "haslocal", "hascompare", "hasfree", "opname", "opmap",
+           "HAVE_ARGUMENT", "EXTENDED_ARG"]
+
+cmp_op = ('<', '<=', '==', '!=', '>', '>=', 'in', 'not in', 'is',
+        'is not', 'exception match', 'BAD')
+
+hasconst = []
+hasname = []
+hasjrel = []
+hasjabs = []
+haslocal = []
+hascompare = []
+hasfree = []
+
+opmap = {{}}
+opname = [''] * 256
+for op in range(256): opname[op] = '<%r>' % (op,)
+del op
+
+def def_op(name, op):
+    opname[op] = name
+    opmap[name] = op
+
+def name_op(name, op):
+    def_op(name, op)
+    hasname.append(op)
+
+def jrel_op(name, op):
+    def_op(name, op)
+    hasjrel.append(op)
+
+def jabs_op(name, op):
+    def_op(name, op)
+    hasjabs.append(op)
+
+# Instruction opcodes for compiled code
+# Blank lines correspond to available opcodes
+
+def_op('STOP_CODE', {s0})
+def_op('POP_TOP', {s1})
+def_op('ROT_TWO', {s2})
+def_op('ROT_THREE', {s3})
+def_op('DUP_TOP', {s4})
+def_op('ROT_FOUR', {s5})
+
+def_op('NOP', {s9})
+def_op('UNARY_POSITIVE', {s10})
+def_op('UNARY_NEGATIVE', {s11})
+def_op('UNARY_NOT', {s12})
+def_op('UNARY_CONVERT', {s13})
+
+def_op('UNARY_INVERT', {s15})
+
+def_op('BINARY_POWER', {s19})
+def_op('BINARY_MULTIPLY', {s20})
+def_op('BINARY_DIVIDE', {s21})
+def_op('BINARY_MODULO', {s22})
+def_op('BINARY_ADD', {s23})
+def_op('BINARY_SUBTRACT', {s24})
+def_op('BINARY_SUBSCR', {s25})
+def_op('BINARY_FLOOR_DIVIDE', {s26})
+def_op('BINARY_TRUE_DIVIDE', {s27})
+def_op('INPLACE_FLOOR_DIVIDE', {s28})
+def_op('INPLACE_TRUE_DIVIDE', {s29})
+def_op('SLICE+0', {s30}+0)
+def_op('SLICE+1', {s30}+1)
+def_op('SLICE+2', {s30}+2)
+def_op('SLICE+3', {s30}+3)
+
+def_op('STORE_SLICE+0', {s40}+0)
+def_op('STORE_SLICE+1', {s40}+1)
+def_op('STORE_SLICE+2', {s40}+2)
+def_op('STORE_SLICE+3', {s40}+3)
+
+def_op('DELETE_SLICE+0', {s50}+0)
+def_op('DELETE_SLICE+1', {s50}+1)
+def_op('DELETE_SLICE+2', {s50}+2)
+def_op('DELETE_SLICE+3', {s50}+3)
+
+def_op('STORE_MAP', {s54})
+def_op('INPLACE_ADD', {s55})
+def_op('INPLACE_SUBTRACT', {s56})
+def_op('INPLACE_MULTIPLY', {s57})
+def_op('INPLACE_DIVIDE', {s58})
+def_op('INPLACE_MODULO', {s59})
+def_op('STORE_SUBSCR', {s60})
+def_op('DELETE_SUBSCR', {s61})
+def_op('BINARY_LSHIFT', {s62})
+def_op('BINARY_RSHIFT', {s63})
+def_op('BINARY_AND', {s64})
+def_op('BINARY_XOR', {s65})
+def_op('BINARY_OR', {s66})
+def_op('INPLACE_POWER', {s67})
+def_op('GET_ITER', {s68})
+
+def_op('PRINT_EXPR', {s70})
+def_op('PRINT_ITEM', {s71})
+def_op('PRINT_NEWLINE', {s72})
+def_op('PRINT_ITEM_TO', {s73})
+def_op('PRINT_NEWLINE_TO', {s74})
+def_op('INPLACE_LSHIFT', {s75})
+def_op('INPLACE_RSHIFT', {s76})
+def_op('INPLACE_AND', {s77})
+def_op('INPLACE_XOR', {s78})
+def_op('INPLACE_OR', {s79})
+def_op('BREAK_LOOP', {s80})
+def_op('WITH_CLEANUP', {s81})
+def_op('LOAD_LOCALS', {s82})
+def_op('RETURN_VALUE', {s83})
+def_op('IMPORT_STAR', {s84})
+def_op('EXEC_STMT', {s85})
+def_op('YIELD_VALUE', {s86})
+def_op('POP_BLOCK', {s87})
+def_op('END_FINALLY', {s88})
+def_op('BUILD_CLASS', {s89})
+
+HAVE_ARGUMENT = {s_ward}           # Opcodes from here have an argument:
+
+name_op('STORE_NAME', {s90})       # Index in name list
+name_op('DELETE_NAME', {s91})      # ""
+def_op('UNPACK_SEQUENCE', {s92})   # Number of tuple items
+jrel_op('FOR_ITER', {s93})
+def_op('LIST_APPEND', {s94})
+name_op('STORE_ATTR', {s95})       # Index in name list
+name_op('DELETE_ATTR', {s96})      # ""
+name_op('STORE_GLOBAL', {s97})     # ""
+name_op('DELETE_GLOBAL', {s98})    # ""
+def_op('DUP_TOPX', {s99})          # number of items to duplicate
+def_op('LOAD_CONST', {s100})       # Index in const list
+hasconst.append({s100})
+name_op('LOAD_NAME', {s101})       # Index in name list
+def_op('BUILD_TUPLE', {s102})      # Number of tuple items
+def_op('BUILD_LIST', {s103})       # Number of list items
+def_op('BUILD_SET', {s104})        # Number of set items
+def_op('BUILD_MAP', {s105})        # Number of dict entries (upto 255)
+name_op('LOAD_ATTR', {s106})       # Index in name list
+def_op('COMPARE_OP', {s107})       # Comparison operator
+hascompare.append({s107})
+name_op('IMPORT_NAME', {s108})     # Index in name list
+name_op('IMPORT_FROM', {s109})     # Index in name list
+jrel_op('JUMP_FORWARD', {s110})    # Number of bytes to skip
+jabs_op('JUMP_IF_FALSE_OR_POP', {s111}) # Target byte offset
+                                        # from beginning of code
+jabs_op('JUMP_IF_TRUE_OR_POP', {s112})  # ""
+jabs_op('JUMP_ABSOLUTE', {s113})        # ""
+jabs_op('POP_JUMP_IF_FALSE', {s114})    # ""
+jabs_op('POP_JUMP_IF_TRUE', {s115})     # ""
+
+name_op('LOAD_GLOBAL', {s116})     # Index in name list
+
+jabs_op('CONTINUE_LOOP', {s119})   # Target address
+jrel_op('SETUP_LOOP', {s120})      # Distance to target address
+jrel_op('SETUP_EXCEPT', {s121})    # ""
+jrel_op('SETUP_FINALLY', {s122})   # ""
+
+def_op('LOAD_FAST', {s124})        # Local variable number
+haslocal.append({s124})
+def_op('STORE_FAST', {s125})       # Local variable number
+haslocal.append({s125})
+def_op('DELETE_FAST', {s126})      # Local variable number
+haslocal.append({s126})
+
+def_op('RAISE_VARARGS', {s130})    # Number of raise arguments (1, 2, or 3)
+def_op('CALL_FUNCTION', {s131})    # #args + (#kwargs << 8)
+def_op('MAKE_FUNCTION', {s132})    # Number of args with default values
+def_op('BUILD_SLICE', {s133})      # Number of items
+def_op('MAKE_CLOSURE', {s134})
+def_op('LOAD_CLOSURE', {s135})
+hasfree.append({s135})
+def_op('LOAD_DEREF', {s136})
+hasfree.append({s136})
+def_op('STORE_DEREF', {s137})
+hasfree.append({s137})
+
+def_op('CALL_FUNCTION_VAR', {s140})     # #args + (#kwargs << 8)
+def_op('CALL_FUNCTION_KW', {s141})      # #args + (#kwargs << 8)
+def_op('CALL_FUNCTION_VAR_KW', {s142})  # #args + (#kwargs << 8)
+
+jrel_op('SETUP_WITH', {s143})
+
+def_op('EXTENDED_ARG', {s145})
+EXTENDED_ARG = {s145}
+def_op('SET_ADD', {s146})
+def_op('MAP_ADD', {s147})
+
+del def_op, name_op, jrel_op, jabs_op
+
