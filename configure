@@ -776,6 +776,7 @@ ac_user_opts='
 enable_option_checking
 enable_marshal
 enable_codeobject
+enable_recompilation
 enable_universalsdk
 with_universal_archs
 with_framework_name
@@ -1434,6 +1435,8 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-marshal       hide marshal functions
   --disable-codeobject    hide codeobject functions
+  --disable-recompilation disable recompilation of .pyc file when .py file is
+                          newer
   --enable-universalsdk[=SDKDIR]
                           Build against Mac OS X 10.4u SDK (ppc/i386)
   --enable-framework[=INSTALLDIR]
@@ -2894,6 +2897,18 @@ fi
 if test "x$enable_codeobject" = "xno"; then :
 
 $as_echo "#define OBFUSCATED_NOCODEOBJECT 1" >>confdefs.h
+
+fi
+
+# disable pyc recompilation #
+# Check whether --enable-recompilation was given.
+if test "${enable_recompilation+set}" = set; then :
+  enableval=$enable_recompilation;
+fi
+
+if test "x$enable_recompilation" = "xno"; then :
+
+$as_echo "#define OBFUSCATED_NORECOMPIL 1" >>confdefs.h
 
 fi
 

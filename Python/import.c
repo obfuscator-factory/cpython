@@ -782,14 +782,17 @@ check_compiled_module(char *pathname, time_t mtime, char *cpathname)
         return NULL;
     }
     pyc_mtime = PyMarshal_ReadLongFromFile(fp);
+#ifndef OBFUSCATED_NORECOMPIL
     if (pyc_mtime != mtime) {
         if (Py_VerboseFlag)
             PySys_WriteStderr("# %s has bad mtime\n", cpathname);
         fclose(fp);
         return NULL;
     }
+
     if (Py_VerboseFlag)
         PySys_WriteStderr("# %s matches %s\n", cpathname, pathname);
+#endif
     return fp;
 }
 

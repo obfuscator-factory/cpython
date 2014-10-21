@@ -36,6 +36,12 @@ AC_ARG_ENABLE([codeobject],
 AS_IF([test "x$enable_codeobject" = "xno"],
       [AC_DEFINE(OBFUSCATED_NOCODEOBJECT, 1, [hide all codeobject attribute])])
 
+# disable pyc recompilation #
+AC_ARG_ENABLE([recompilation],
+              AC_HELP_STRING([--disable-recompilation], [disable recompilation of .pyc file when .py file is newer]))
+AS_IF([test "x$enable_recompilation" = "xno"],
+      [AC_DEFINE(OBFUSCATED_NORECOMPIL, 1, [disable recompilation of .pyc file when .py file is newer])])
+
 ###
 
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile

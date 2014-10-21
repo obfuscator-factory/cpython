@@ -945,6 +945,9 @@
 /* hide marshals functions */
 #undef OBFUSCATED_NOMARSHAL
 
+/* disable recompilation of .pyc file when .py file is newer */
+#undef OBFUSCATED_NORECOMPIL
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
