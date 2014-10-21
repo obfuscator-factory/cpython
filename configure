@@ -774,6 +774,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_marshal
 enable_universalsdk
 with_universal_archs
 with_framework_name
@@ -1430,6 +1431,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --disable-marshal       hide marshal functions
   --enable-universalsdk[=SDKDIR]
                           Build against Mac OS X 10.4u SDK (ppc/i386)
   --enable-framework[=INSTALLDIR]
@@ -2856,6 +2858,32 @@ case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 
 
+
+###
+# Obfuscation configuration part
+###
+
+# random magic number #
+
+cat >>confdefs.h <<_ACEOF
+#define MAGIC $RANDOM
+_ACEOF
+
+
+
+# disable marshal #
+# Check whether --enable-marshal was given.
+if test "${enable_marshal+set}" = set; then :
+  enableval=$enable_marshal;
+fi
+
+if test "x$enable_nomarshal" = "xno"; then :
+
+$as_echo "#define OBFUSCATED_NOMARSHAL 1" >>confdefs.h
+
+fi
+
+###
 
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile
 rm -f pybuilddir.txt

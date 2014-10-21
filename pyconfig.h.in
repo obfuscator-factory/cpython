@@ -925,6 +925,9 @@
 /* Define if you are using Mach cthreads under mach / */
 #undef MACH_C_THREADS
 
+/* magic number */
+#undef MAGIC
+
 /* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
    */
 #undef MAJOR_IN_MKDEV
@@ -935,6 +938,9 @@
 
 /* Define if mvwdelch in curses.h is an expression. */
 #undef MVWDELCH_IS_EXPRESSION
+
+/* hide marshals functions */
+#undef OBFUSCATED_NOMARSHAL
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT

@@ -1364,10 +1364,12 @@ EOFError, ValueError or TypeError. Extra characters in the string are\n\
 ignored.");
 
 static PyMethodDef marshal_methods[] = {
+#ifndef OBFUSCATED_NOMARSHAL
     {"dump",            marshal_dump,   METH_VARARGS,   dump_doc},
     {"load",            marshal_load,   METH_O,         load_doc},
     {"dumps",           marshal_dumps,  METH_VARARGS,   dumps_doc},
     {"loads",           marshal_loads,  METH_VARARGS,   loads_doc},
+#endif
     {NULL,              NULL}           /* sentinel */
 };
 

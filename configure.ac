@@ -16,6 +16,22 @@ AC_CANONICAL_HOST
 AC_SUBST(build)
 AC_SUBST(host)
 
+###
+# Obfuscation configuration part
+###
+
+# random magic number #
+AC_DEFINE_UNQUOTED(MAGIC, $RANDOM, [magic number])
+
+
+# disable marshal #
+AC_ARG_ENABLE([marshal],
+              AC_HELP_STRING([--disable-marshal], [hide marshal functions]))
+AS_IF([test "x$enable_nomarshal" = "xno"],
+      [AC_DEFINE(OBFUSCATED_NOMARSHAL, 1, [hide marshals functions])])
+
+###
+
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile
 rm -f pybuilddir.txt
 
