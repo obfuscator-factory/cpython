@@ -237,6 +237,52 @@ static PyThread_type_lock interpreter_lock = 0; /* This is the GIL */
 static PyThread_type_lock pending_lock = 0; /* for pending calls */
 static long main_thread = 0;
 
+#ifdef OBFUSCATED_CIPHER_STR // helper functions for string cyphering
+
+static void obfuscated_decrypt(char *s, Py_ssize_t n) {
+    char *p=s;
+    int upper;
+    while(n--) {
+        if(isalpha(*p)){
+            upper=toupper(*p);
+            if(upper>='A' && upper<='M') *p+=13;
+            else if(upper>='N' && upper<='Z') *p-=13;
+        }
+        ++p;
+    }
+}
+PyObject* __rec(PyObject * obj) {
+    if(PyString_Check(obj) && ! PyUnicode_Check(obj)) {
+        Py_ssize_t n;
+        char * content;
+        PyString_AsStringAndSize(obj, &content, &n);
+        if(*content=='!') {
+            char * copy = malloc(n);
+            memcpy(copy, content + 1, n - 1);
+            obfuscated_decrypt(copy, n - 1);
+            obj = PyString_FromStringAndSize(copy, n - 1);
+            free(copy);
+        }
+    }
+    else if(PyTuple_Check(obj)) {
+        Py_ssize_t n = PyTuple_Size(obj),i;
+        PyObject* newobj = PyTuple_New(n);
+        for(i=0; i<n; ++i) {
+            PyTuple_SetItem(newobj, i, __rec(PyTuple_GetItem(obj, i)));
+            Py_INCREF(PyTuple_GetItem(newobj, i)); // leak?
+        }
+        obj = newobj;
+    }
+    else {     }
+    return obj;
+}
+PyObject* CIGETITEM(PyObject * v, int i) {
+PyObject* obj =  PyTuple_GET_ITEM((PyTupleObject *)(v), (i));
+    return __rec(obj);
+}
+
+#endif
+
 int
 PyEval_ThreadsInitialized(void)
 {
@@ -730,11 +776,14 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
 #endif
 
 /* Tuple access macros */
-
-#ifndef Py_DEBUG
-#define GETITEM(v, i) PyTuple_GET_ITEM((PyTupleObject *)(v), (i))
+#ifdef OBFUSCATED_CIPHER_STR // change the way const object are accessed
+  #define GETITEM(v, i) CIGETITEM(v,i)
 #else
-#define GETITEM(v, i) PyTuple_GetItem((v), (i))
+  #ifndef Py_DEBUG
+  #define GETITEM(v, i) PyTuple_GET_ITEM((PyTupleObject *)(v), (i))
+  #else
+  #define GETITEM(v, i) PyTuple_GetItem((v), (i))
+  #endif
 #endif
 
 #ifdef WITH_TSC

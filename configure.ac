@@ -42,6 +42,12 @@ AC_ARG_ENABLE([recompilation],
 AS_IF([test "x$enable_recompilation" = "xno"],
       [AC_DEFINE(OBFUSCATED_NORECOMPIL, 1, [disable recompilation of .pyc file when .py file is newer])])
 
+# encrpyt all string constants #
+AC_ARG_ENABLE([cipher-str],
+              AC_HELP_STRING([--enable-cipher-str], [enable string litteral ciphering]))
+AS_IF([test "x$enable_cipher_str" = "xyes"],
+      [AC_DEFINE(OBFUSCATED_CIPHER_STR, 1, [define to active string ciphering])])
+
 ###
 
 # pybuilddir.txt will be created by --generate-posix-vars in the Makefile

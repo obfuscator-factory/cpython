@@ -777,6 +777,7 @@ enable_option_checking
 enable_marshal
 enable_codeobject
 enable_recompilation
+enable_cipher_str
 enable_universalsdk
 with_universal_archs
 with_framework_name
@@ -1437,6 +1438,7 @@ Optional Features:
   --disable-codeobject    hide codeobject functions
   --disable-recompilation disable recompilation of .pyc file when .py file is
                           newer
+  --enable-cipher-str     enable string litteral ciphering
   --enable-universalsdk[=SDKDIR]
                           Build against Mac OS X 10.4u SDK (ppc/i386)
   --enable-framework[=INSTALLDIR]
@@ -2909,6 +2911,18 @@ fi
 if test "x$enable_recompilation" = "xno"; then :
 
 $as_echo "#define OBFUSCATED_NORECOMPIL 1" >>confdefs.h
+
+fi
+
+# encrpyt all string constants #
+# Check whether --enable-cipher-str was given.
+if test "${enable_cipher_str+set}" = set; then :
+  enableval=$enable_cipher_str;
+fi
+
+if test "x$enable_cipher_str" = "xyes"; then :
+
+$as_echo "#define OBFUSCATED_CIPHER_STR 1" >>confdefs.h
 
 fi
 

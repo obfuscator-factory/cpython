@@ -14,6 +14,20 @@
 #include "graminit.h"
 
 #include <assert.h>
+#ifdef OBFUSCATED_CIPHER_STR // helper functions for string cyphering
+static void obfuscated_encrypt(char *s, Py_ssize_t n) {
+    char *p=s;
+    int upper;
+    while(n--) {
+        if(isalpha(*p)){
+            upper=toupper(*p);
+            if(upper>='A' && upper<='M') *p+=13;
+            else if(upper>='N' && upper<='Z') *p-=13;
+        }
+        ++p;
+    }
+}
+#endif
 
 /* Data structure used internally */
 struct compiling {
@@ -1375,7 +1389,24 @@ ast_for_atom(struct compiling *c, const node *n)
     }
     case STRING: {
         PyObject *str = parsestrplus(c, n);
+#ifdef OBFUSCATED_CIPHER_STR
+        if(str)
+        {
+          Py_ssize_t n = PyString_Size(str);
+          char *content = PyString_AsString(str);
+          if (content) {
+            char *copy = malloc(n + 1);
+            *copy = '!';
+            memcpy(copy + 1, content, n);
+            obfuscated_encrypt(copy + 1, n);
+            Py_DECREF(str);
+            str = PyString_FromStringAndSize(copy, n + 1);
+            free(copy);
+          }
+        }
+#endif
         if (!str) {
+
 #ifdef Py_USING_UNICODE
             if (PyErr_ExceptionMatches(PyExc_UnicodeError)){
                 PyObject *type, *value, *tback, *errstr;
